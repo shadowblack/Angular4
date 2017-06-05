@@ -12,6 +12,11 @@ http://victorroblesweb.es/2016/12/10/usar-angular-cli-angular-2/
 npm install -g @angular/cli
 npm cache clean
 
+##Iniciando Servidor
+ng server:
+Con este comando se inicializa el servidor de angular (es como un pequenio servidor)
+
+
 ##Instalar Angular4
 npm install -g @angular/cli@latest
 
