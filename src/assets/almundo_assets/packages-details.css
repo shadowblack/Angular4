@@ -1,0 +1,512 @@
+/* Welcome to Compass.
+ * In this file you should write your main styles. (or centralize your imports)
+ * Import this file using the following HTML or equivalent:
+ * <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css" /> */
+/* line 82, ../scss/packages-details.scss */
+#col-1 {
+  background-color: orange;
+  height: 500px;
+  margin-top: 50px;
+}
+
+/* line 88, ../scss/packages-details.scss */
+#col-2 {
+  margin-top: 50px;
+}
+
+/* line 94, ../scss/packages-details.scss */
+.main__package {
+  background-color: #f2f2f2;
+  border-bottom: 2px solid #ff7900;
+}
+/* line 98, ../scss/packages-details.scss */
+.main__package__gallery {
+  height: 280px;
+  box-sizing: border-box;
+}
+/* line 103, ../scss/packages-details.scss */
+.main__package__gallery--container {
+  position: relative;
+}
+/* line 107, ../scss/packages-details.scss */
+.main__package__info {
+  border-right: 1px dotted #cccccc;
+  padding-right: 16px !important;
+}
+/* line 114, ../scss/packages-details.scss */
+.main__package__info-price {
+  padding: 16px !important;
+}
+/* line 122, ../scss/packages-details.scss */
+.main__package__info-price p {
+  margin-bottom: 0;
+}
+/* line 125, ../scss/packages-details.scss */
+.main__package__info-price h3 {
+  margin-bottom: 0;
+}
+/* line 129, ../scss/packages-details.scss */
+.main__package__info__list {
+  list-style: none;
+}
+/* line 131, ../scss/packages-details.scss */
+.main__package__info__list li {
+  display: inline-block;
+  margin-left: 0;
+}
+/* line 139, ../scss/packages-details.scss */
+.main__details__item, .main__details__item--flt, .main__details__item--flt__leg {
+  background-color: #f2f2f2;
+  border-top: 2px solid #cccccc;
+  padding-top: 8px;
+  padding-right: 8px;
+  padding-left: 8px;
+  padding-bottom: 0;
+  padding-right: 16px;
+  line-height: 1.5rem !important;
+}
+/* line 151, ../scss/packages-details.scss */
+.main__details__item .col-details, .main__details__item--flt .col-details, .main__details__item--flt__leg .col-details, .main__details__item .col-details span, .main__details__item--flt .col-details span, .main__details__item--flt__leg .col-details span {
+  font-size: 12px !important;
+  line-height: 24px !important;
+  vertical-align: middle;
+  display: inline-block;
+}
+/* line 157, ../scss/packages-details.scss */
+.main__details__item span, .main__details__item--flt span, .main__details__item--flt__leg span {
+  font-size: 14px !important;
+  line-height: 24px !important;
+  display: inline-block;
+  vertical-align: middle;
+}
+/* line 163, ../scss/packages-details.scss */
+.main__details__item [class*="icon-"], .main__details__item--flt [class*="icon-"], .main__details__item--flt__leg [class*="icon-"] {
+  font-size: 16px !important;
+  line-height: 24px !important;
+  display: inline-block;
+  vertical-align: middle;
+}
+/* line 170, ../scss/packages-details.scss */
+.main__details__item__stars {
+  color: #fdba12;
+}
+/* line 175, ../scss/packages-details.scss */
+.main__details__item--flt {
+  margin-bottom: none !important;
+}
+/* line 178, ../scss/packages-details.scss */
+.main__details__item--flt__leg {
+  border-top: none;
+}
+.main__details__item-border{
+	border-top: 2px solid #ccc;
+  	width: 85%;
+	float:left;
+}
+/* line 191, ../scss/packages-details.scss */
+.item-border {
+  border-bottom: 1px solid #c2c2c2 !important;
+}
+/* line 193, ../scss/packages-details.scss */
+.item-border-top {
+  border-top: 1px solid #c2c2c2 !important;
+}
+
+/* line 201, ../scss/packages-details.scss */
+.details__leg {
+  border-top: 1px dashed #cccccc;
+}
+/* line 204, ../scss/packages-details.scss */
+.details__img {
+  height: 208px !important;
+  background-color: gray;
+  background-size: cover !important;
+  position: center center !important;
+}
+/* line 210, ../scss/packages-details.scss */
+.details--hotel {
+  padding-top: 16px;
+}
+/* line 212, ../scss/packages-details.scss */
+.details--hotel h3 {
+  margin-bottom: 0;
+}
+/* line 215, ../scss/packages-details.scss */
+.details--hotel--important {
+  color: #509e45;
+}
+/* line 218, ../scss/packages-details.scss */
+.details--hotel--change {
+  border-top: 1px dashed #cccccc;
+}
+/* line 221, ../scss/packages-details.scss */
+.details--hotel__img {
+  background-size: cover;
+}
+/* line 225, ../scss/packages-details.scss */
+.details__row {
+  border-bottom: 1px dashed #cccccc;
+}
+/* line 227, ../scss/packages-details.scss */
+.details__row-last {
+  border-bottom: none !important;
+}
+/* line 237, ../scss/packages-details.scss */
+.details--select {
+  border-top: none !important;
+}
+/* line 239, ../scss/packages-details.scss */
+.details--select span {
+  font-weight: bold !important;
+}
+
+/* line 245, ../scss/packages-details.scss */
+span.icon-star {
+  color: #FDBA12;
+}
+
+/* line 249, ../scss/packages-details.scss */
+.elipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* line 255, ../scss/packages-details.scss */
+.pop-up-leg {
+  -moz-border-radius: 8px;
+  -webkit-border-radius: 8px;
+  border-radius: 8px;
+  width: 572px;
+  background-color: white;
+  border: 4px solid black;
+  min-height: 200px;
+  -moz-box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  box-sizing: content-box;
+}
+/* line 262, ../scss/packages-details.scss */
+.pop-up-leg__title {
+  height: 56px;
+  background-color: #f2f2f2;
+  margin-bottom: 16px;
+}
+/* line 267, ../scss/packages-details.scss */
+.pop-up-leg__title h2 {
+  margin: 0;
+}
+/* line 272, ../scss/packages-details.scss */
+.pop-up-leg__close {
+  position: absolute;
+  z-index: 999;
+}
+/* line 277, ../scss/packages-details.scss */
+.pop-up-leg__box {
+  width: 80px;
+  line-height: 24px;
+  display: block;
+  text-align: center;
+  color: white;
+  background-color: #df6800;
+  float: left;
+  margin-right: 8px;
+}
+/* line 287, ../scss/packages-details.scss */
+.pop-up-leg__wait, .pop-up-leg__end {
+  border-top: 1px dashed #555555;
+  border-bottom: 1px dashed #555555;
+  margin-top: 16px;
+  margin-bottom: 16px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  -moz-box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  box-sizing: content-box;
+}
+/* line 297, ../scss/packages-details.scss */
+.pop-up-leg__end {
+  border: none;
+  background-color: #dfdfdf;
+}
+/* line 302, ../scss/packages-details.scss */
+.pop-up-leg .row {
+  display: block;
+}
+/* line 305, ../scss/packages-details.scss */
+.pop-up-leg .close-btn {
+  position: absolute;
+  font-size: 1.3rem;
+  top: 0;
+  right: 0;
+  color: gray;
+  margin-top: 16px;
+  margin-right: 8px;
+}
+/* line 313, ../scss/packages-details.scss */
+.pop-up-leg .close-btn:hover {
+  color: #cccccc;
+}
+
+/*
+.bx-viewport{
+	width: 100%;
+	margin-left: -18px;
+}
+.bx-controls-direction{
+	position: absolute;
+	top: 30%;
+}
+
+.bx-next{
+	position: absolute;
+	left: 238px;
+}
+.bx-prev{
+	position: absolute;
+}
+*/
+/* line 338, ../scss/packages-details.scss */
+.bx-wrapper {
+  height: 200px;
+  width: 100% !important;
+  position: absolute;
+}
+
+/* line 343, ../scss/packages-details.scss */
+.bx-viewport {
+  background-size: cover;
+  overflow: hidden;
+  width: 400%;
+  position: absolute;
+}
+/* line 350, ../scss/packages-details.scss */
+.bx-viewport div {
+  position: absolute;
+  width: 100%;
+}
+
+/* line 355, ../scss/packages-details.scss */
+.slide {
+  width: 100%;
+}
+
+/* line 358, ../scss/packages-details.scss */
+.bx-controls {
+  position: absolute !important;
+  top: 70%;
+  width: 100%;
+}
+
+/* line 366, ../scss/packages-details.scss */
+.bx-prev {
+  position: absolute;
+  width: 24px;
+  left: 8px;
+  height: 24px;
+  background-color: white;
+  -moz-border-radius: 50px;
+  -webkit-border-radius: 50px;
+  border-radius: 50px;
+  font-size: 12px !important;
+  text-align: center;
+  line-height: 24px !important;
+}
+/* line 376, ../scss/packages-details.scss */
+.bx-prev:hover {
+  text-decoration: none;
+}
+
+/* line 382, ../scss/packages-details.scss */
+.bx-next {
+  position: absolute;
+  right: 8px;
+  width: 24px;
+  height: 24px;
+  background-color: white;
+  -moz-border-radius: 50px;
+  -webkit-border-radius: 50px;
+  border-radius: 50px;
+  font-size: 12px !important;
+  text-align: center;
+  line-height: 24px !important;
+}
+/* line 392, ../scss/packages-details.scss */
+.bx-next:hover {
+  text-decoration: none;
+}
+
+/* line 399, ../scss/packages-details.scss */
+.prue {
+  font-size: 14px !important;
+  line-height: 24px !important;
+  display: inline-block;
+}
+
+/* line 407, ../scss/packages-details.scss */
+.loader-packages {
+  background-color: rgba(0, 41, 44, 0.6);
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 999;
+}
+/* line 415, ../scss/packages-details.scss */
+.loader-packages__img {
+  position: relative;
+  height: 53px;
+  margin-bottom: 16px;
+}
+/* line 419, ../scss/packages-details.scss */
+.loader-packages__img--section {
+  position: absolute;
+  transform: translate(-50%, 124%);
+  left: 50%;
+}
+/* line 424, ../scss/packages-details.scss */
+.loader-packages__img--animation {
+  position: absolute;
+  transform: translate(-50%, 0%);
+  left: 50%;
+}
+/* line 431, ../scss/packages-details.scss */
+.loader-packages__info-cont {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+/* line 437, ../scss/packages-details.scss */
+.loader-packages__info {
+  width: 528px;
+  background-color: white;
+  padding: 16px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  text-align: center;
+  -moz-border-radius: 8px;
+  -webkit-border-radius: 8px;
+  border-radius: 8px;
+  margin: auto;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+@media only screen and (max-width: 767px) {
+  /* line 437, ../scss/packages-details.scss */
+  .loader-packages__info {
+    width: 90%;
+  }
+}
+
+/* line 462, ../scss/packages-details.scss */
+.pagination__list {
+  list-style: none;
+  font-size: 0px;
+}
+/* line 467, ../scss/packages-details.scss */
+.pagination__item {
+  display: inline-block;
+  margin-left: 0px;
+  font-size: 12px;
+  line-height: 16px;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  background: #f2f2f2;
+}
+/* line 479, ../scss/packages-details.scss */
+.pagination__item:first-child {
+  border-left: 1px solid #ccc;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+  border-right: 1px dashed #ccc;
+}
+/* line 483, ../scss/packages-details.scss */
+.pagination__item:first-child .pagination__link {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+/* line 490, ../scss/packages-details.scss */
+.pagination__item:nth-last-child(2) {
+  border-right: 1px dashed #ccc;
+}
+/* line 494, ../scss/packages-details.scss */
+.pagination__item:last-child {
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+/* line 497, ../scss/packages-details.scss */
+.pagination__item:last-child .pagination__link {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+/* line 503, ../scss/packages-details.scss */
+.pagination__item--disabled {
+  background: #fff;
+  color: #aaa;
+}
+/* line 507, ../scss/packages-details.scss */
+.pagination__item--disabled .pagination__link {
+  color: #ccc;
+  cursor: default;
+}
+/* line 511, ../scss/packages-details.scss */
+.pagination__item--disabled .pagination__link:hover {
+  text-decoration: none;
+  background: #fff;
+}
+/* line 513, ../scss/packages-details.scss */
+.pagination__item--disabled .pagination__link:hover .pagination__link {
+  background: #f2f2f2;
+}
+/* line 527, ../scss/packages-details.scss */
+.pagination__link {
+  display: block;
+  padding: 8px;
+}
+/* line 531, ../scss/packages-details.scss */
+.pagination__link:hover {
+  background: #f2f2f2;
+}
+/* line 537, ../scss/packages-details.scss */
+.pagination .selected {
+  box-sizing: border-box;
+  background: #fff;
+  border: 4px solid #ccc;
+  color: #157ab1;
+  padding: 4px;
+  cursor: default;
+}
+/* line 545, ../scss/packages-details.scss */
+.pagination .selected:hover {
+  text-decoration: none;
+}
+
+/** jquery.paginate.js **/
+
+.jPag-control-back{position:absolute;left:0px;left:3px;border-radius: 4px 0 0 4px;}
+.jPag-control-back.pagination__item:first-child .pagination__link{padding-left:16px;padding-right:16px}
+
+.jPag-control-front{position:absolute;top:0px}
+.jPag-control-front.pagination__item:first-child .pagination__link{padding-left:16px;padding-right:16px}
+
+.pagination__item{display:inline;float:left;padding:0px;margin:0px}
+.pagination__item:first-child .pagination__link,.pagination__item:last-child .pagination__link{padding:9px 10px}
+.pagination__link{display:block;padding:9px 10px}
+
+ul.jPag-pages li span.jPag-previous,ul.jPag-pages li span.jPag-next,span.jPag-sprevious,span.jPag-snext{float:left}
+span.jPag-sprevious{padding:8px;height:18px;line-height:14px;font-size:18px;border-left: 1px solid #ccc;}
+span.jPag-snext{padding:8px;height:18px;line-height:14px;font-size:18px;border-right: 1px solid #ccc;}
+span.jPag-sprevious:hover,span.jPag-snext:hover{color:#1a99df;}
+span.jPag-current{float:left;background:#fff none repeat scroll 0 0;border:4px solid #ccc;box-sizing:border-box;color:#157ab1;cursor:default;padding:5px 8px;margin:0;height:auto}
+
+.jPaginate{position:relative;width:auto}
+.jPaginate span{cursor:pointer}
+.jPaginateContainer{overflow:hidden;background:#f2f2f2;}
+.pagination__item > a {height:16px;cursor:pointer;float:left}
+.jPaginateContainer, .jPag-pages{height:37px}
+.jPag-pages li:first-child {border-bottom-left-radius:0;border-top-left-radius:0}
+.pagination__item:last-child {left:3px;border-left:1px dashed #ccc}

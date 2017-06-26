@@ -1,0 +1,451 @@
+/**
+ * Detail functions
+ * @author Pablo Maggi
+**/
+
+//	Flag to know if there is an Ajax call in progress
+var ajax_request;
+//	Hidden form containing variables for different functions
+var formulario;
+
+$(document).ready(function(){
+	//	
+	U_Slideshow();
+	//	Segments modal functions
+	modal();
+	//	Enable all click events on load
+	click_events();
+	//	Identify direct or grid detail
+	formulario	= $('form[name="change_product"]');
+	var directo = $('input[name="directo"]', formulario).val();
+	//	If this mode is not direct, go for the package options
+	if (directo==0) {
+		//	Search fot this package options
+		//	Get_Options(product);
+	} else {
+		//	Action for the button
+		$('a.button--search').on('click', function(e){
+			e.preventDefault();
+			e.stopPropagation();
+			$('form[name="buscador_paquetes"]').find('input[name="fecha_desde"]').focus();
+		});
+	}
+	//	Select Permalink
+	$('input[name="permalink"]').off('click').on('click', function() { $(this).select(); })
+});
+//	
+function U_Slideshow(){
+	//	Slider
+	var _SlideshowTransitions = [
+		//Fade in R
+		{$Duration: 1200, x:-0.3, $During: { $Left: [0.3, 0.7] }, $Easing: { $Left: $JssorEasing$.$EaseInCubic, $Opacity: $JssorEasing$.$EaseLinear }, $Opacity: 2 },
+		//Fade out L
+		{$Duration: 1200, x: 0.3, $SlideOut: true,                $Easing: { $Left: $JssorEasing$.$EaseInCubic, $Opacity: $JssorEasing$.$EaseLinear }, $Opacity: 2 }
+	];
+	//	Slider Options
+	var options = {
+		$AutoPlay: true,									//[Optional] Whether to auto play, to enable slideshow, this option must be set to true, default value is false
+		$AutoPlaySteps: 1,									//[Optional] Steps to go for each navigation request (this options applys only when slideshow disabled), the default value is 1
+		$AutoPlayInterval: 4000,							//[Optional] Interval (in milliseconds) to go for next slide since the previous stopped if the slider is auto playing, default value is 3000
+		$PauseOnHover: 1,									//[Optional] Whether to pause when mouse over if a slider is auto playing, 0 no pause, 1 pause for desktop, 2 pause for touch device, 3 pause for desktop and touch device, 4 freeze for desktop, 8 freeze for touch device, 12 freeze for desktop and touch device, default value is 1
+		$ArrowKeyNavigation: true,							//[Optional] Allows keyboard (arrow key) navigation or not, default value is false
+		$SlideDuration: 500,								//[Optional] Specifies default duration (swipe) for slide in milliseconds, default value is 500
+		$MinDragOffsetToSlide: 20,							//[Optional] Minimum drag offset to trigger slide , default value is 20
+	//	$SlideWidth: 500,									//[Optional] Width of every slide in pixels, default value is width of 'slides' container
+	//	$SlideHeight: 300,									//[Optional] Height of every slide in pixels, default value is height of 'slides' container
+		$SlideSpacing: 0,									//[Optional] Space between each slide in pixels, default value is 0
+		$DisplayPieces: 1,									//[Optional] Number of pieces to display (the slideshow would be disabled if the value is set to greater than 1), the default value is 1
+		$ParkingPosition: 0,								//[Optional] The offset position to park slide (this options applys only when slideshow disabled), default value is 0.
+		$UISearchMode: 1,									//[Optional] The way (0 parellel, 1 recursive, default value is 1) to search UI components (slides container, loading screen, navigator container, arrow navigator container, thumbnail navigator container etc).
+		$PlayOrientation: 1,								//[Optional] Orientation to play slide (for auto play, navigation), 1 horizental, 2 vertical, 5 horizental reverse, 6 vertical reverse, default value is 1
+		$DragOrientation: $('input[name=imgAmount]').val(),	//[Optional] Orientation to drag slide, 0 no drag, 1 horizental, 2 vertical, 3 either, default value is 1 (Note that the $DragOrientation should be the same as $PlayOrientation when $DisplayPieces is greater than 1, or parking position is not 0)
+		$SlideshowOptions: {								//[Optional] Options to specify and enable slideshow or not
+			$Class: $JssorSlideshowRunner$,					//[Required] Class to create instance of slideshow
+			$Transitions: _SlideshowTransitions,			//[Required] An array of slideshow transitions to play slideshow
+			$TransitionsOrder: 1,							//[Optional] The way to choose transition to play slide, 1 Sequence, 0 Random
+			$ShowLink: true									//[Optional] Whether to bring slide link on top of the slider when slideshow is running, default value is false
+		},
+		$BulletNavigatorOptions: {                         //[Optional] Options to specify and enable navigator or not
+			$Class: $JssorBulletNavigator$,                //[Required] Class to create navigator instance
+			$ChanceToShow: 2,                              //[Required] 0 Never, 1 Mouse Over, 2 Always
+			$Lanes: 1,                                     //[Optional] Specify lanes to arrange items, default value is 1
+			$SpacingX: 10,                                 //[Optional] Horizontal space between each item in pixel, default value is 0
+			$SpacingY: 10                                  //[Optional] Vertical space between each item in pixel, default value is 0
+		},
+		$ArrowNavigatorOptions: {
+			$Class: $JssorArrowNavigator$,              	//[Requried] Class to create arrow navigator instance
+			$ChanceToShow: 2,                              //[Required] 0 Never, 1 Mouse Over, 2 Always
+			$AutoCenter: 2                                 //[Optional] Auto center navigator in parent container, 0 None, 1 Horizontal, 2 Vertical, 3 Both, default value is 0
+		},
+		$ThumbnailNavigatorOptions: {
+			$Class: $JssorThumbnailNavigator$,             //[Required] Class to create thumbnail navigator instance
+			$ChanceToShow: 2,                              //[Required] 0 Never, 1 Mouse Over, 2 Always
+			$ActionMode: 0,                                //[Optional] 0 None, 1 act by click, 2 act by mouse hover, 3 both, default value is 1
+			$DisableDrag: true                             //[Optional] Disable drag or not, default value is false
+		}
+	};
+	var jssor_sliderb = new $JssorSlider$("sliderb_container", options);
+}
+//	Look for options for the product
+function Get_Options(product, ciudad, tramo, code) {
+	if (typeof ajax_request !== 'undefined'){ajax_request.abort();}
+	ajax_request = $.ajax({
+		url: formulario.attr('action'),
+		dataType: 'json',
+		cache: false,
+		data: {'product': product, 'ciudad': ciudad, 'tramo': tramo, 'code': code},
+		beforeSend: function() {
+			//	Adds specific text to loading modal, depending on the product
+			var message = "";
+			switch (product) {
+				case 'HTL':
+					message = 'Estamos buscando opciones de hoteles';
+					break;
+				case 'TKT':
+					message = 'Estamos buscando opciones de vuelos';
+					break;
+				case 'PKT':
+					message = 'Estamos buscando opciones de paquetes';
+					break;
+				case 'ACT':
+					message = 'Estamos buscando opciones de excursiones';
+					break;
+				case 'CAR':
+					message = 'Estamos buscando opciones de autos';
+					break;
+			}
+			if (message != "") {
+				$('.searching-options').html(message);
+			}
+			//	Show the loading modal
+			$('.loader-packages').show();
+		},
+		success: function(data) {	
+			//	is there something to display ?
+			if (data && data.opciones) {
+				//	Toggle product description
+				$('.container-'+product+'-'+ciudad+'-'+tramo).find('.product_title:first').trigger('click');
+				//	Search fot the selected option
+				$('.container-'+product+'-'+ciudad+'-'+tramo).append(data.opciones);
+				//	Scroll to options
+				$('html, body').animate({ scrollTop: $('.container-'+product+'-'+ciudad+'-'+tramo).offset().top}, 2000);
+				//	Find default config for paginator
+				var total	= $("#"+product+'-'+ciudad+'-'+tramo).data('product_amount');
+				var rpp 	= $("#"+product+'-'+ciudad+'-'+tramo).data('amount_perpage');
+				var pages	= Math.ceil(total / rpp);
+				if (pages>1) {
+					//	Options pagination
+					$("#"+product+'-'+ciudad+'-'+tramo).paginate({
+						count:pages,
+						start:1,
+						display:(pages < 8) ? pages : 8,
+						text_first:'< Inicio',
+						text_last:'Fin >',
+						rotate:true,
+						mouse:'press',
+						onChange:function(page){
+							$('._current','#paginate_options'+'-'+ciudad+'-'+tramo).removeClass('_current').hide();
+							$('#p'+page+'-'+ciudad+'-'+tramo).addClass('_current').show();
+							$('html, body').animate({ scrollTop: $('.container-'+product+'-'+ciudad+'-'+tramo).offset().top}, 2000);
+						}
+					});
+				}
+				//	Call segment detail modal functions
+				modal();
+			} else {
+				//	Show error no options
+				$('.error-'+product+'-'+ciudad+'-'+tramo).show();
+			}
+		},
+		complete: function(data) {
+			//	Hide the loading modal
+			$('.loader-packages').hide();
+			// Hide get-more-options button
+			$('.error-'+product+'-'+tramo).parent().find('.get-more-options').hide();
+			click_events();	
+		},
+		error: function(data, status, error) {
+			//	Changes style to buy button
+			$('.button-buy').removeClass('button--loading').html('Comprar');
+			//	Show error no options and scroll to it
+			$('.error-'+product+'-'+ciudad+'-'+tramo).show();
+			$('html, body').animate({ scrollTop: $('.error-'+product+'-'+ciudad+'-'+tramo).parent().offset().top}, 2000);
+		},
+		timeout: 90000,
+		async: true
+	});
+}
+//	Changes selected product or refirects to booking
+function Check_Availability(button) {
+	try{AlmundoAnalytics.Actions();}catch(err){}
+	if (typeof ajax_request !== 'undefined') { ajax_request.abort(); }
+	ajax_request = $.ajax({
+		url: button.data('url'),
+		dataType: 'json',
+		cache: false,
+		async: true,
+		beforeSend: function() {
+			button.addClass('button--loading').html('Iniciando compra');
+		},
+		success: function(response) {
+			if (typeof response != 'undefined' && typeof response.url_booking != 'undefined') {
+			//	window.location.href = response.url_booking;
+				GoogleTagManager.LinkByGet(response.url_booking);
+				return false;
+			}
+		},
+		complete: function() {},
+		error: function(jqXHR, textStatus, errorThrown) {
+			//	Disables buy button
+			button.removeClass('button--secondary button--loading').addClass('button--disabled').html('Comprar');
+			button.addClass('button-buy');
+			$('.error-verify').show();
+			$('html, body').animate({ scrollTop: $('.error-verify').parent().offset().top}, 2000);
+		},
+		timeout: 90000	
+	});
+}
+//	Change product
+function Change_product(link) {
+	try{AlmundoAnalytics.Actions();}catch(err){}
+	if (typeof ajax_request !== 'undefined') { ajax_request.abort(); }
+	var url = $('.button-buy').data('url');
+	ajax_request = $.ajax({
+		url: url,
+		dataType: 'json',
+		data: {'product': link.data('product'), 'code': link.data('code')},
+		cache: false,
+		async: true,
+		beforeSend: function() {
+			//	Adds specific text to loading modal, depending on the product
+			var message = "";
+			switch (link.data('product')) {
+				case 'HTL':
+					message = 'Cambiando habitación...';
+					break;
+				case 'TKT':
+					message = 'Cambiando vuelo...';
+					break;
+				case 'PKT':
+					message = 'Cambiando paquete...';
+					break;
+				case 'ACT':
+					message = 'Cambiando excursión...';
+					break;
+				case 'CAR':
+					message = 'Cambiando auto...';
+					break;
+			}
+			if (message != "") {
+				$('.searching-options').html(message);
+			}
+			//	Hide error box if its visible
+			$('.error_change-'+link.data('product')+'-'+link.data('ciudad')).hide();
+			//	Show the loading modal
+			$('.loader-packages').show();
+		},
+		success: function(response) {
+			if (typeof response != 'undefined' && typeof response.codigo != 'undefined') {
+				//	Adds code and cotiza to url and reload package detail with new product selected
+				var detail_url	= document.URL.split('?');
+				var params 		= getURLparams(detail_url[1]);
+				var hash 		= params['hash'];
+				//	Detail url for the redirect
+				detail_url = detail_url[0]
+					+'?id_paquete='+response['id_paquete']
+					+'&codigo='+response['codigo']
+					+'&codigo_hotel='+response['codigo_hotel']
+					+'&hash='+hash
+					+ (response['cotiza'] ? '&cotiza='+response['cotiza'] : '');
+				window.location.href = detail_url;
+			}
+		},
+		complete: function() {},
+		error: function(jqXHR, textStatus, errorThrown) {
+			//	Show error no options and scroll to it
+			$('.error_change-'+link.data('product')+'-'+link.data('ciudad')).show();
+			$('html, body').animate({ scrollTop: $('.error_change-'+link.data('product')+'-'+link.data('ciudad')).offset().top - $(window).height() + ($('.error_change-'+link.data('product')+'-'+link.data('ciudad'))).height() + 20}, 2000);
+			//	Hide the loading modal
+			$('.loader-packages').hide();
+		},
+		timeout: 90000	
+	});
+}
+//	Function get direct detail
+function directDetail(){
+	//	Show searching modal
+	message = 'Estamos buscando el mejor precio para su paquete';
+	$('.searching-options').html(message);
+	$('.loader-packages').show();
+	//	Obtain package ID
+	var package_id = $('#buscador_paquetes-id_paquete').val();
+	//	Control
+	if (package_id == ""){return false;}
+	//	Direct detail php 
+	var url_ajax_dd	= $('form[name="change_product"]').find('input[name="url_ajax_dd"]').val();
+	//	Serialized form
+	var form = $('form[name="buscador_paquetes"]').serialize();
+	$.ajax({
+		url:url_ajax_dd+'?id_paquete='+package_id,dataType:'json',data:form,type:'POST',cache:false,timeout:60000
+	})
+	.fail(function(datos){
+		$('.error-verify').find('.alert__text-primary').html('Lo sentimos. No encontramos disponibilidad para esas fechas.');
+		$('.error-verify').find('.alert__text-secondary').html('Por favor intente con otras fechas o realice una nueva búsqueda');
+		$('.error-verify').show();
+		$('.loader-packages').hide();
+		$('html, body').animate({ scrollTop: $('.error-verify').parent().offset().top}, 2000);
+	})
+	.done(function(data){
+		if (typeof(data)=='object' && typeof(data.link)=='string') {
+			window.location.href=data.link;
+		}
+	})
+	.always(function(){})
+	return false;
+}
+//	Splits url by parameters, returns array of parameters
+function getURLparams(url){
+    var match,
+        pl     = /\+/g,  // Regex for replacing addition symbol with a space
+        search = /([^&=]+)=?([^&]*)/g,
+        decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
+        query  = window.location.search.substring(1);
+        urlParams = {};
+    while (match = search.exec(query)) {
+       urlParams[decode(match[1])] = decode(match[2]);
+    }
+    return urlParams;
+};
+//	Segment detail modal function
+function modal(){
+	//	Segments modal
+	$('.easy-modal').easyModal({
+		top: 100,
+		overlay: 0.2
+	});
+	//	Open segment detail modal
+	$('.easy-modal-open').off('click').on('click', function(e) {
+		var target = $(this).attr('href');
+		$(target).trigger('openModal');
+		e.preventDefault();
+	});
+	//	Click Close
+	$('.easy-modal-close').off('click').on('click', function(e) {
+		$('.easy-modal').trigger('closeModal');
+	});
+	//	Animated close effect
+	$('.easy-modal-animated').easyModal({
+		top: 200,
+		overlay: 0.2,
+		transitionIn: 'animated bounceInLeft',
+		transitionOut: 'animated bounceOutRight',
+		closeButtonClass: '.animated-close'
+	});
+}
+//	Click events
+function click_events(){
+	//	Show / Hide product info
+	$('.product_title').off('click').on('click', function(e){
+		$(this).parent().parent().find('.product_information').each(function(i,e){
+			$(e).toggle();
+		});
+		//	Link view detail
+		var view_detail = $(this).parent().parent().find('.detail');
+		if (view_detail.hasClass('icon-down')) {
+			view_detail.removeClass('icon-down').addClass('icon-up');
+		} else {
+			view_detail.removeClass('icon-up').addClass('icon-down');
+		}
+	});
+	//	Show / Hide room options
+	$('.more_rooms').off('click').on('click', function(e){
+		$(this).parent().parent().parent().find('.more-rooms-container').toggle();
+	});
+	//	Ajax call to get more product options
+	$('.get-more-options').off('click').on('click', function(){
+		//	Read data attributes necessary for ajax call
+		var product	= $(this).data('product');
+		var ciudad	= $(this).data('ciudad');
+		var tramo 	= $(this).data('tramo');
+		var code 	= $(this).data('code');
+		//	Hide button more options
+		$(this).parent().hide();
+		//	Go get more options
+		Get_Options(product, ciudad, tramo, code);
+	});
+	//	Select room from hotel options
+	$('.change_hotel').on('change', function(e){
+		//	City identifier
+		var city = $(this).data('tramo');
+		//	Resets codes from buttons between hotels
+		$('.option_link-'+city).each(function(i, e){
+			$(e).data('code', "");
+		});
+		//	Changes price difference text above change button
+		var tipo  = $(this).data('tipo');
+		var signo = "";
+		if (tipo == 'SUMA') {
+			signo = '+';
+		} else if (tipo == 'RESTA'){
+			signo = '-';
+		}
+		var price = $(this).data('price');
+		var price_span = $(this).closest('.option-container').find('.price-difference-'+city);
+		price_span.html(signo+' '+price);
+		//	Adds code to change button
+		var code = $(this).val();
+		var button = $(this).closest('.option-container').find('.option_link');
+		button.data('code', code);
+		//	Hide text no option selected
+		$('.no-option').hide();
+	});
+	//	Change product
+	$('.option_link').off('click').on('click', function(e){
+		if ($(this).data('code') == "") {
+			if ($(this).data('product') == 'HTL') {
+				$(this).parent().parent().find('.no-option').show();
+			}
+			return false;
+		}
+		e.preventDefault();
+		e.stopPropagation();
+		Change_product($(this));
+	});
+	//	Buy button action
+	$('.button-buy').off('click').one('click', function(e){
+		e.preventDefault();
+		e.stopPropagation();
+		Check_Availability($(this));
+	});
+	//	Read more description / read less
+	$('.read_more').off('click').on('click', function(){
+		$(this).parent().parent().find('.package-description').css('max-height', '100%');
+		//	Change link text
+		if ($(this).data('status') == 'read_more') {
+			$(this).data('status', 'read_less').html('Leer menos...');
+		} else {
+			$(this).data('status', 'read_more').html('Leer más...');
+			$(this).parent().parent().find('.package-description').css('max-height', '115px');
+			$('html, body').animate({ scrollTop: 0}, 2000);
+		}
+	});
+	//	Show package description on modal
+	$('.package-description').on('click',function(e) {
+		e.preventDefault();
+		e.stopPropagation();
+
+		var elm = $('#package-description'),
+			bkg = $('.modal-background');
+
+		bkg.show();	
+		$(window).scrollTop(0);
+		elm.show( "slow", function() {
+			var topPos = Math.ceil( elm.height() / 2) + 100 ;
+			elm.css("top", topPos + "px");
+  		});
+	});
+	//	Clicking on modals background
+	$('.modal-background').on('click',function(e){e.preventDefault();e.stopPropagation();$('.modal--fluid:visible').hide();$('.modal-background').hide();});
+	//	Closing modal 
+	$('.modal__close').on('click',function(e){e.preventDefault();e.stopPropagation();$(this).parent().hide();$('.modal-background').hide();});
+}

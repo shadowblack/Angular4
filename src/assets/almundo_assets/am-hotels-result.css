@@ -1,0 +1,83 @@
+@font-face{
+	font-family:'almundo';src:url("../../public/homepage-css/fonts/almundo.eot?-wojnng");
+	src:url("../../public/homepage-css/fonts/almundo.eot?#iefix-wojnng") format("embedded-opentype"),
+	url("../../public/homepage-css/fonts/almundo.woff?-wojnng") format("woff"), 
+	url("../../public/homepage-css/fonts/almundo.ttf?-wojnng") format("truetype"), 
+	url("../../public/homepage-css/fonts/almundo.svg?-wojnng#almundo") format("svg");
+	font-weight:normal;
+	font-style:normal
+}
+
+/** ui autocomplete **/
+.ui-autocomplete-loading{background-image:url(img/ui-bg_autocomplete-loading.gif)!important;background-position:right center!important;background-repeat:no-repeat!important}
+.cancelSearch{background:url(img/ui-bg_autocomplete-error.gif) no-repeat scroll 0 0 transparent;display:none;height:12px;overflow:hidden;position:absolute;top:34px;right:12px;text-indent:-9999px;width:12px;z-index:1}
+/** searchs all **/
+.search {margin:0 0 32px !important;background-size:cover}
+.search .alert__icon{font-size:1rem;line-height:1rem;padding:10px 14px;width:40px}
+.search .alert__text-primary {font-size:0.9rem;line-height:1rem;font-weight:normal}
+.home .search .search__ctn{height:auto;padding:16px 0 !important}
+aside .search, aside .search .search__ctn {background-image:none}
+/** remove filters **/
+#sidebar-filtros{position:relative}
+#sidebar-filtros>.filter__loader--active{z-index:100}
+#sidebar-filtros>.filter__loader--active>.filter__loader__content{top:10%}
+.room-description .room-price {padding:10px 0px 10px 0px !important}
+/** PAQUETES **/
+.invisible{visibility:hidden}
+.hotel-detail .hotel-img-thumbs .thumb img {height:71px;width:71px}
+[class^=" icono-modulo-"], [class*="icono-modulo-"] {background: url("img/sprite-modulov31.png") 25px 0px transparent;background-repeat:no-repeat;display:inline-block !important;width:25px;height:25px;float:none;margin-right:1px;position:relative;top:5px}
+.icono-modulo-TKT {background-position:  0px 0px}
+.icono-modulo-CRU {background-position:-25px 0px}
+.icono-modulo-HTL, .icono-modulo-HTL1, .icono-modulo-HTL2, .icono-modulo-HTL3, .icono-modulo-HTL4, .icono-modulo-HTL5 {background-position:-50px 0px;}
+.icono-modulo-TRF {background-position: -75px 0px}
+.icono-modulo-BUS {background-position: -75px 0px}
+.icono-modulo-SME {background-position:-100px 0px}
+.icono-modulo-ACT {background-position:-125px 0px}
+.icono-modulo-SRV {background-position:-125px 0px}
+.icono-modulo-TRE {background-position:-150px 0px}
+.icono-modulo-PTR {background-position:-150px 0px}
+.icono-modulo-CAR {background-position:-175px 0px}
+.icono-modulo-TAR {background-position:-200px 0px}
+.icono-modulo-PDN {background-position:-225px 0px}
+.slide.img{max-width:200px;max-height:200px}
+.bx-wrapper .bx-controls-direction a.disabled {display:block}
+.icono-vuelta {background-image:url("img/sprite-gral.png");background-repeat:no-repeat;background-position:-182px -53px;height:14px;width:14px;display:inline-block;float:left;margin:6px 4px 6px 4px}
+.segment-detail-popup {position:absolute;z-index:1;background:white;border:1px solid #ccc;display:none;list-style-type:none;margin:27px;padding:0;text-align:left;white-space:nowrap}
+.view-detail{float:right;font-size:14px;margin:5px 10px 0 0}
+.product-box{border-top:1px solid #b7c8d8;border-bottom:1px solid #b7c8d8;border-left:2px solid #b7c8d8;border-right:2px solid #b7c8d8;cursor:pointer}
+/** Hide bxSlider controls when modal is up **/
+.bx-controls-direction a {z-index:0 !important}
+/**	Segment modal **/
+.easy-modal, .easy-modal-animated {width:600px;padding:2em;box-shadow:1px 1px 3px rgba(0,0,0,0.35);background-color:white}
+/** Flight Title ellipsis **/
+.title-ellipsis{max-width:50%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.button.button--loading:hover{background-size:30px 30px;background-image:-webkit-linear-gradient(bottom left, rgba(0,0,0,0.1) 25%, transparent 25%, transparent 50%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.1) 75%, transparent 75%, transparent);background-image:-o-linear-gradient(bottom left, rgba(0,0,0,0.1) 25%, transparent 25%, transparent 50%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.1) 75%, transparent 75%, transparent);background-image:linear-gradient(to top right, rgba(0,0,0,0.1) 25%,rgba(0,0,0,0) 25%,rgba(0,0,0,0) 50%,rgba(0,0,0,0.1) 50%,rgba(0,0,0,0.1) 75%,rgba(0,0,0,0) 75%,rgba(0,0,0,0));background-color:#bbb;background-color:#aaa;color:#ccc;cursor:default;-webkit-animation:barberpole 0.5s linear infinite;-webkit-animation:barberpole 0.5s linear infinite;-moz-animation:barberpole 0.5s linear infinite;-o-animation:barberpole 0.5s linear infinite;animation:barberpole 0.5s linear infinite;-moz-box-shadow:none;-webkit-box-shadow:none;box-shadow:none;text-shadow:none}
+.pagination__item>a{text-decoration:none;cursor:pointer}
+/** JSSOR Slider */
+.captionOrange, .captionBlack {color:#fff;font-size:20px;line-height:30px;text-align:center;border-radius:4px}
+.captionOrange {background:#EB5100;background-color:rgba(235, 81, 0, 0.6)}
+.captionBlack {font-size:16px;background:#000; background-color:rgba(0, 0, 0, 0.4)}
+a.captionOrange, A.captionOrange:active, A.captionOrange:visited {color:#ffffff;text-decoration:none}
+a.captionOrange:hover {color:#eb5100;text-decoration:underline;background-color:#eeeeee;background-color:rgba(238, 238, 238, 0.7)}
+/* jssor slider bullet navigator skin 01 css */
+/*
+.jssorb01 div           (normal)
+.jssorb01 div:hover     (normal mouseover)
+.jssorb01 .av           (active)
+.jssorb01 .av:hover     (active mouseover)
+.jssorb01 .dn           (mousedown)
+*/
+.jssorb01 {position:absolute}
+.jssorb01 div, .jssorb01 div:hover, .jssorb01 .av {position: absolute;/* size of bullet elment */width:12px;height:12px;filter:alpha(opacity=70);opacity:.7;overflow:hidden;cursor:pointer;border:#000 1px solid}
+.jssorb01 div {background-color:gray}
+.jssorb01 div:hover, .jssorb01 .av:hover {background-color:#d3d3d3}
+.jssorb01 .av {background-color:#fff}
+.jssorb01 .dn, .jssorb01 .dn:hover {background-color:#555555}
+.jssora05l, .jssora05r {display:block;position:absolute;/* size of arrow element */width:40px;height:40px;cursor:pointer;background:url(../../imagenes/a17.png) no-repeat;overflow:hidden}
+.jssora05l {background-position:-10px -40px}
+.jssora05r {background-position:-70px -40px}
+.jssora05l:hover {background-position:-130px -40px}
+.jssora05r:hover {background-position:-190px -40px}
+.jssora05l.jssora05ldn {background-position:-250px -40px}
+.jssora05r.jssora05rdn {background-position:-310px -40px}
+.modal {background-color: #fff !important; position: absolute !important; height: auto;}

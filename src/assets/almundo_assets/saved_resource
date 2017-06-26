@@ -1,0 +1,442 @@
+$(document).ready(function () {
+	// -----------------------------------------------------
+	// -------------___Flitghts_Packages___----------------
+	// -----------------------------------------------------
+
+	//  Global Varialbles
+
+	var jqXHR;		//	jQuery XMLHttpRequest
+	var validator;
+	var lang;
+	var zone_id;
+	//	Identify direct or grid detail
+	var formulario	= $('form[name="change_product"]');
+	var directo = $('input[name="directo"]', formulario).val()||false;
+	GLOBAL_LOCALE == 'pt-BR' ? lang = 'pt-BR' : lang = 'es';
+
+	//  Object Literal Definition
+	var searchBoxPackages={
+		init:function(settings){
+			searchBoxPackages.config={
+				formBase:$('.searchbox--package'),
+				inputs:{
+					productFilter: $('input[name="producto"]',$(this).formbase),
+					selectLocation:{
+						destination:$('#destination',$(this).formBase),
+						origin:$('#origin',$(this).formBase)
+					},
+					selectDate:$('#departure',$(this).formBase),
+					selectDuration:$('#duration',$(this).formBase),
+					passengers:{
+						selectAdults:$('#adults',$(this).formBase),
+						selectChildren:$('#children',$(this).formBase)
+					}
+				},
+				search:[],
+				urlBase:"#",
+				zone_id: "",
+				codigo_origen: "",
+				fecha_desde: ""
+			};
+			//	allow overriding the default config
+			$.extend(searchBoxPackages.config,settings);
+			searchBoxPackages.setup();
+		},
+		setup:function(){
+			searchBoxPackages.rememberSearch()
+			searchBoxPackages.config.formBase.each(searchBoxPackages.validateForm)
+			searchBoxPackages.config.inputs.productFilter.each(searchBoxPackages.productFilter)
+			searchBoxPackages.config.inputs.passengers.selectChildren.each (searchBoxPackages.configChildrenAge)
+			searchBoxPackages.config.inputs.selectLocation.destination.each(searchBoxPackages.destinationChange)
+			searchBoxPackages.config.inputs.selectLocation.origin.each(searchBoxPackages.originChange)
+		},
+		validateForm:function(index,formBase){
+		      validator = $(formBase).validate({
+				onclick:false,onfocusout:false,focusCleanup:true,focusInvalid:false,onkeyup:false,errorClass:'message--error',ignore:null,
+				rules:{
+					id_zona: 'required',
+					origen: {required: function () {
+						var requiredCond = ($('#origin > option').length > 1) ? true : false;
+						return requiredCond;
+					}},
+					fecha_desde: {required: function () {
+						var requiredCond = ($('.button-search').hasClass('button--disabled')) ? false : true;
+						return requiredCond;
+					}},
+					duracion: {required: function () {
+						var requiredCond = ($('.button-search').hasClass('button--disabled')) ? false : true;
+						return requiredCond;
+					}},
+					adults: {required: function () {
+						var requiredCond = ($('.button-search').hasClass('button--disabled')) ? false : true;
+						return requiredCond;
+					}}
+				},
+				showErrors:function(errorMap,errorList){
+					$.each(errorList,function(i,item){
+						var  messageError =  $('.message--error',$(item.element).parent());
+			            if(item.element.id == "destination"){
+			              $('input[id="destination"]').removeClass('input--error').addClass('input--error');
+			            }
+			            $(item.element).focus(function () {
+			              messageError.removeClass('hidden').addClass('hidden');
+			            });
+			            messageError.addClass('hidden').toggleClass('hidden');
+					})
+				},
+				submitHandler:function(form,al){
+					if($('.button-search').hasClass('button--disabled')) {
+						return false;
+					}
+					if (directo == 1) {
+						directDetail();
+					} else {
+						validator.currentForm.submit()
+					}
+				}
+			});
+		},
+		configChildrenAge:function(){
+			var veces=$(this).val()||0
+			if(veces==0){$('.age-selector').removeClass('hidden').addClass('hidden')}
+			$('.age-selector:lt('+($(this).val())+')').removeClass('hidden')
+			$('.age-selector:gt('+($(this).val()-1)+')').removeClass('hidden').addClass('hidden')
+			$(this).on('change',function(){
+				var veces=$(this).val();
+				if(veces==0){$('.age-selector').removeClass('hidden').addClass('hidden')}
+				$('.age-selector:lt('+($(this).val())+')').removeClass('hidden')
+				$('.age-selector:gt('+($(this).val()-1)+')').removeClass('hidden').addClass('hidden')
+			});
+		},
+		productFilter:function(){	
+			$(this).on('change', function(){
+				//	Variable assignment
+				var formBase = searchBoxPackages.config.formBase;
+				var product = ($(this).is(':checked')) ? $(this).val() : "";
+				searchBoxPackages.config.search.producto = product;
+				$('#buscador_paquetes-producto').val(product);
+				//	AJAX call
+				$.ajax({
+					url:$(formBase).data('source'),dataType:'json',data:{'producto':product},type:'GET',cache:false,timeout:60000
+				})
+				.fail(function(datos){
+					//	Overlay hide
+					$('.filter__loader').addClass('hidden').removeClass('filter__loader--active');
+				})
+				.done(function(data){
+					//	Control
+					if(data&&typeof(data)=='object'){
+						var zonas = (data) ? (data) : "";
+						Destinations	= searchBoxPackages.showDestinations(zonas);	
+					}else{
+						//	Overlay hide
+						$('.filter__loader').addClass('hidden').removeClass('filter__loader--active');
+					}
+				})
+				.always(function(){})
+			})
+			//	If previous search exists, select it and execute the events
+			if(searchBoxPackages.config.search.producto){
+				$(this).prop('checked', true).trigger('change');
+			}else{
+				$(this).trigger('change').prop('checked', false);
+			}
+			return false;
+		},
+		showDestinations:function(zonas){
+			//	Variable assignment
+			var destination = searchBoxPackages.config.inputs.selectLocation.destination;
+			var defaultoption = $('option:eq(0)', destination);
+			//	Add default option with default text
+			destination.empty().append('<option value="">'+defaultoption.text()+'</option>')
+			//	If there are more than 1 options, enable and show selector
+			if(zonas.length>0){
+				//	Overlay hide
+				$('.filter__loader').addClass('hidden').removeClass('filter__loader--active');
+				//	Hide origins row if there arent any
+				$.map(zonas,function(zona,index){
+					destination.append('<option value="'+zona.id_zona+'">'+zona.nombre+'</option>')
+				})
+				//	If theres only 1 option, select it
+				if(zonas.length == 1){
+					$('option:eq(1)',origin).attr('selected',true).trigger('change');
+				}else{
+					//	If previous search exists, select it and execute the events
+					if(searchBoxPackages.config.search.id_zona){
+						$('option[value="'+searchBoxPackages.config.search.id_zona+'"]',destination).attr('selected',true).trigger('change');
+					}
+				}
+			} else {
+				$('option[value=""]',destination).attr('selected',true).trigger('change');
+			}
+			return false;
+		},
+		destinationChange:function(){
+			$('option:eq(0)',this).attr('selected',true);
+			$(this).on('change',function(e){
+				//	Hide containers to make the user set the new config
+				$('#origin-container').addClass('invisible');
+				$('#departure-container').addClass('invisible');
+				$('#duration-container').addClass('invisible');
+				$('#passengers-container').addClass('invisible');
+				//	Disable search button
+				$('.button-search').addClass('button--disabled').removeClass('button--secondary');
+				//	Detects human change of destination to enable normal searchbox
+				if (directo == 1){
+					if (e.originalEvent !== undefined){
+						if ($(this).val() != $('#buscador_paquetes-id_zona')){
+							$('input[name="directo"]', $('form[name="change_product"]')).val(0);
+							$('option:eq(0)',this).val("").html('Elegí el destino');
+						}
+					}
+				}
+				//	Variable assignment
+				var formBase= searchBoxPackages.config.formBase;
+				var zone_id	= $(this).val()||"";
+				//	Control
+				if(!zone_id){return false}
+				//	Assignment of $zone_id to global config
+				searchBoxPackages.config.zone_id = zone_id;
+				//	Overlay show
+				$('.filter__loader').removeClass('hidden').addClass('filter__loader--active');
+				//	Falcon call to get origin zones
+				$.ajax({
+					url:$(formBase).data('source'),dataType:'json',data:{'zone_id':zone_id,'producto':searchBoxPackages.config.search.producto},type:'GET',cache:false,timeout:60000
+				}).fail(function(datos){
+					//	Overlay hide
+					$('.filter__loader').addClass('hidden').removeClass('filter__loader--active');
+				}).done(function(data){
+					//	Control
+					if(data&&typeof(data)=='object'){
+						var origenes = (data.origenes) ? (data.origenes) : "";
+						Origins	= searchBoxPackages.showOrigins(origenes);	
+					}else{
+						//	Overlay hide
+						$('.filter__loader').addClass('hidden').removeClass('filter__loader--active');
+					}
+				}).always(function(){
+					//	Overlay hide
+					//$('.filter__loader').addClass('hidden').removeClass('filter__loader--active');
+				})
+				return false;
+			});
+			//	If previous search exists, select it and execute the events
+			if(searchBoxPackages.config.search.id_zona){
+				$('option[value="'+searchBoxPackages.config.search.id_zona+'"]',this).attr('selected',true).trigger('change');
+			}else{
+				$('option:eq(0)', this).attr('selected',true).trigger('change');
+			}
+		},
+		showOrigins:function(origenes){
+			//	Variable assignment
+			var origin = searchBoxPackages.config.inputs.selectLocation.origin;
+			var defaultoption = $('option:eq(0)', origin);
+			//	Add default option with default text
+			origin.empty().append('<option value="">'+defaultoption.text()+'</option>')
+			//	If there are more than 1 options, enable and show selector
+			if(origenes.length>0){
+				//	Overlay hide
+				$('.filter__loader').addClass('hidden').removeClass('filter__loader--active');
+				//	Hide origins row if there arent any
+				$.map(origenes,function(origen,index){
+					origin.append('<option value="'+origen.codigo+'">'+origen.nombre+'</option>')
+				})
+				$('#origin-container').removeClass('invisible');
+				//	If theres only 1 option, select it
+				if(origenes.length == 1){
+					$('option:eq(1)',origin).attr('selected',true).trigger('change')
+				}else{
+					//	If previous search exists, select it and execute the events
+					if(searchBoxPackages.config.search.codigo_origen){
+						$('option[value="'+searchBoxPackages.config.search.codigo_origen+'"]',origin).attr('selected',true).trigger('change');
+					}
+				}
+			}else{
+				$('#origin-container').addClass('invisible');
+				$('option[value=""]',origin).attr('selected',true).trigger('change');
+			}
+			return false;
+		},
+		originChange:function(){
+			$('option:eq(0)',this).attr('selected',true);
+			$(this).on('change',function(){
+				//	Hide containers to make the user set the new config
+				$('#departure-container').addClass('invisible');
+				$('#duration-container').addClass('invisible');
+				$('#passengers-container').addClass('invisible');
+				//	Disable search button
+				$('.button-search').addClass('button--disabled').removeClass('button--secondary');
+				//	Variable assignment
+				var formBase		= searchBoxPackages.config.formBase;
+				var codigo_origen	= $(this).val()||"";
+				//	Control
+				//	Assign codigo_origen to global config info
+				searchBoxPackages.config.codigo_origen = codigo_origen;
+				//	Overlay show
+				$('.filter__loader').removeClass('hidden').addClass('filter__loader--active');
+				//	Get dates for this config
+				$.ajax({
+					url:$(formBase).data('source'),dataType:'json',data:{'zone_id':searchBoxPackages.config.zone_id,'producto':searchBoxPackages.config.search.producto,'codigo_origen':codigo_origen},type:'GET',cache:false,timeout:60000
+				}).fail(function(datos){
+					//	Overlay hide
+					$('.filter__loader').addClass('hidden').removeClass('filter__loader--active');
+				}).done(function(data){
+					if(data&&typeof(data)=='object'){
+						Dates		= searchBoxPackages.showDates(data.fechas);
+					}
+				}).always(function(){
+					
+				})
+				return false;
+			});
+		},
+		showDates:function(dates){
+			//	Variable assignment
+			var error					= false;
+			var departure				= searchBoxPackages.config.inputs.selectDate;
+			var departureDates			= [];
+			var departureMinDate		= departure.data('mindate');
+//			var departuredefaultDate	= departure.data('mindate');
+			var departureMaxDate		= departure.data('maxdate');
+			//	If there are more than 1 date, enable and show the input
+			if(dates.length>0){
+//				var departuredefaultDate	= dates[0];
+				//	Traemos todas las fechas disponibles para esta zona de origen
+				//	["2015-05-31", "2015-06-01", "2015-06-02", 180 más...]
+				$.map(dates,function(date,index){
+					var datesplit=date.split('-')
+					//	Seteamos la fecha mínima del calendario
+					if(index==0){
+						departureMinDate=datesplit[2]+'/'+datesplit[1]+'/'+datesplit[0]
+						departuredefaultDate=departureMinDate
+					}
+					//	Seteamos la fecha máxima del calendario
+					if(index==(dates.length)-1){
+						departureMaxDate=datesplit[2]+'/'+datesplit[1]+'/'+datesplit[0]
+					}
+					departureDates[date]=date
+				});
+				//	If previous search exists, select it and execute the events
+				if (searchBoxPackages.config.search.fecha_desde && departureDates[searchBoxPackages.config.search.fecha_desde]) {
+					var datesplit=searchBoxPackages.config.search.fecha_desde.split('-');
+					departuredefaultDate = (datesplit[2]+'/'+datesplit[1]+'/'+datesplit[0]);
+				}
+				searchBoxPackages.datePicker(departureDates,departuredefaultDate,departureMinDate,departureMaxDate);
+				$('#departure-container').removeClass('invisible');
+				//	Overlay hide
+				$('.filter__loader').addClass('hidden').removeClass('filter__loader--active');
+			}else{
+				error=true
+			}
+			return error;
+		},
+		datePicker:function(dates,defaultDate,min,max){
+			$.datepicker.setDefaults($.datepicker.regional[lang]);
+			var departure = searchBoxPackages.config.inputs.selectDate;
+			departure.datepicker('destroy').datepicker({
+				hideIfNoPrevNext:true,numberOfMonths:1,firstDay:0,defaultDate:defaultDate, minDate:min,maxDate:max,dateFormat:'dd/mm/yy',
+				beforeShowDay:function(date){
+					var date_str=[date.getFullYear(),addZero(date.getMonth()+1),addZero(date.getDate())].join('-');
+					if(dates[date_str]){return [true,'good_date','Fecha disponible']}else{return [false,'bad_date','Esta fecha no está disponible']}
+				},
+				onSelect:function(selectedDate,inst){
+					//	Parse date if the correct format for Falcon
+					var date = $.datepicker.parseDate(
+					        inst.settings.dateFormat || $.datepicker._defaults.dateFormat,
+					        selectedDate,
+					        inst.settings
+					    );
+					var date_str=[date.getFullYear(),addZero(date.getMonth()+1),addZero(date.getDate())].join('-');
+					$('.filter__loader').removeClass('hidden').addClass('filter__loader--active');
+					$.ajax({
+						url:searchBoxPackages.config.formBase.data('source'),dataType:'json',data:{'zone_id':searchBoxPackages.config.zone_id,'producto':searchBoxPackages.config.search.producto,'codigo_origen':searchBoxPackages.config.codigo_origen,'fecha_desde':date_str},type:'GET',cache:false,timeout:60000
+					}).fail(function(datos){
+					}).done(function(data){
+						if(data&&typeof(data)=='object'){
+							Dates	= searchBoxPackages.showDurations(data.duracion);
+						}
+					}).always(function(){
+						$('.filter__loader').addClass('hidden').removeClass('filter__loader--active');
+					})
+					return false;
+				}
+			})
+			if (searchBoxPackages.config.search.fecha_desde != "") {
+				departure.datepicker('setDate', defaultDate);
+				$('.ui-datepicker-current-day').click();
+			} else {
+				//	If on direct detail, dont auto open datepicker on page load
+				if($('form[name="change_product"]').find('input[name="directo"]').val() != 1){
+					departure.datepicker('show');
+				}
+			}
+		},
+		showDurations:function(durations){
+			var error=false;
+			var selectDuration=searchBoxPackages.config.inputs.selectDuration
+			var defaultoption=$('option:eq(0)', selectDuration)
+			selectDuration.empty().append('<option value="">'+defaultoption.text()+'</option>')
+			//	Si hay mas de una opcion podemos habilitar y mostrar el selector
+			if(durations.length>0){
+				$.map(durations,function(duration,index){
+					selectDuration.append('<option value="'+duration+'">'+duration+' dias</option>')
+				})
+				$('#duration-container').removeClass('invisible')
+				//	Si solo hay una opcion posible la marcamos como seleccionada
+				if(durations.length==1){
+					$('option:eq(1)',selectDuration).attr('selected',true).trigger('change')
+				}else{
+					//	If previous search exists, select it and execute the events
+					if(searchBoxPackages.config.search.duracion){
+						$('option[value="'+searchBoxPackages.config.search.duracion+'"]',selectDuration).attr('selected',true).trigger('change');
+					}
+				}
+				//	Remember adults amount
+				if (searchBoxPackages.config.search.cantidad_adt) {
+					$('option[value="'+searchBoxPackages.config.search.cantidad_adt+'"]',searchBoxPackages.config.inputs.passengers.selectAdults).attr('selected',true).trigger('change');
+				} else {
+					$('option[value="'+2+'"]',searchBoxPackages.config.inputs.passengers.selectAdults).attr('selected',true).trigger('change');
+				}
+				//	Remember cnn amount
+				if (searchBoxPackages.config.search.cantidad_cnn>0) {
+					$('option[value="'+searchBoxPackages.config.search.cantidad_cnn+'"]',searchBoxPackages.config.inputs.passengers.selectChildren).attr('selected',true).trigger('change');
+					try{
+						$.map($.parseJSON(searchBoxPackages.config.search.edades_menores),function(item,index){
+							$('.age-selector:lt('+(index)+')').removeClass('hidden')
+							$('#age-'+(index+1)+' option[value="'+item+'"]').attr('selected',true).trigger('change')
+						});
+					}catch(exception){}
+				}
+				//	Show pax selectors
+				$('#passengers-container').removeClass('invisible');
+				//	Enable search button
+				$('.button-search').removeClass('button--disabled').addClass('button--secondary');
+				
+			}else{
+				error=true
+			}
+			return error;
+		},
+		rememberSearch:function(){
+			searchBoxPackages.config.search={
+				'id_paquete':$('#buscador_paquetes-id_paquete').val()||"",
+				'producto':$('#buscador_paquetes-producto').val()||"",
+				'id_zona':$('#buscador_paquetes-id_zona').val()||"",
+				'codigo_origen':$('#buscador_paquetes-codigo_origen').val()||"",
+				'nombre_zona':$('#buscador_paquetes-nombre_zona').val()||"",
+				'fecha_desde':$('#buscador_paquetes-fecha_desde').val()||"", //	2015-06-16
+				'duracion':$('#buscador_paquetes-duracion').val()||"",
+				'cantidad_adt':$('#buscador_paquetes-cantidad_adt').val()||"",
+				'cantidad_cnn':$('#buscador_paquetes-cantidad_cnn').val()||"",
+				'edades_menores':$('#buscador_paquetes-edades_menores').val()||""
+			};
+		}
+	};
+	//	Implementation
+	searchBoxPackages.init();
+});
+
+//	Adds zero to one-digit months and days 
+function addZero(vNumber){
+	return ((vNumber<10)?'0':'')+vNumber;
+}

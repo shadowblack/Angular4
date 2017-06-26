@@ -44,5 +44,16 @@
     "ts-node": "~3.0.4",
     "tslint": "~5.3.2",
     "typescript": "~2.3.3"
-  }
+  },
+  "description": "Ensayo y practica de Angular4",
+  "main": "karma.conf.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shadowblack/Angular4.git"
+  },
+  "author": "",
+  "bugs": {
+    "url": "https://github.com/shadowblack/Angular4/issues"
+  },
+  "homepage": "https://github.com/shadowblack/Angular4#readme"
 }

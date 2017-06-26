@@ -1,0 +1,54 @@
+<ul class="global-li desktop">
+  <li *ngFor="let item of items" >
+    <div class="global-div">
+      <div>
+        <div class="left">
+          <img src="assets/images/1.jpg">
+        </div>
+        <div class="center">
+          <ul class="global-li">
+            <li class="subtitle-global-a height">{{ item.name }}</li>
+            <li class="stars">{{ item.stars}}</li>
+            <li class="subtitle-global-b">Desayuno</li>
+            <li class="subtitle-global-c">
+              <a>Ver detalle del hotel</a>
+            </li>
+          </ul>
+        </div>
+        <div class="right">
+          <ul class="global-li">
+            <li class="title-a">Adicional por persona</li>
+            <li class="title-b">ARS + {{ item.price }}</li>
+            <li>Total <strong>Vuelo + Hotel y Seguro</strong> por persona</li>
+            <li><button>Elegir</button></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </li>
+</ul>
+
+<ul class="global-li smart">
+  <div *ngFor="let item of items">
+    <li  >
+      <div>
+        <img src="assets/images/1.jpg">
+      </div>
+    </li>
+    <li class="subtitle-global-a">
+      {{ item.name }}
+    </li>
+    <li class="subtitle-global-b">
+      ARS + {{ item.price }}
+    </li>
+    <li class="subtitle-global-e">
+      <a>Ver detalle del hotel</a>
+    </li>
+    <li>
+      <button>Elegir</button>
+    </li>
+  </div>
+</ul>
+
+
+
