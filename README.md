@@ -1,3 +1,17 @@
+
+# Frontend
+Maquetar una página de resultado de hoteles, solo los clusters de hoteles y filtros (ver adjunto). 
+Consumir la Api desarrollada en el ejercicio anterior, con angular.js 1.x o 2.x, para listar los hoteles dinámicamente. 
+
+# Tener en cuenta:
+- Grilla a elección para el maquetado.
+- Uso de gestor de tareas para el tratamiento de estáticos (minificación, ofuscación, etc)
+- Uso de patrones de diseño y best practices (componentes, filtros, factories, etc).
+
+
+Ante alguna duda puede consultar esta página 
+
+
 # Angular4
 Ensayo y practica de Angular4
 
