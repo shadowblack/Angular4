@@ -1,7 +1,6 @@
-import {Component} from '@angular/core';
+import { Component } from '@angular/core';
 import { MyDataService } from './my-data.service';
-import {Http, Response} from "@angular/http";
-
+import { Response } from "@angular/http";
 
 @Component({
   selector : 'app-sliders',
@@ -12,21 +11,14 @@ import {Http, Response} from "@angular/http";
 })
 export class SlidersComponent {
 
-  ngOnInit() {
-
-  }
-
   items: Array<object>;
 
-  constructor(private http: Http, private newService: MyDataService) {
-    this.getHotels();
-  }
+  constructor(private newService: MyDataService) {}
 
-  getHotels(){
-    return this.http.get('assets/data/hotels.json').subscribe(
+  ngOnInit() {
+    this.newService.fechData().subscribe(
       (res: Response) =>  {
-        const hotels = res.json();
-        this.items = hotels;
+        this.items = res.json();
       }
     );
   }
